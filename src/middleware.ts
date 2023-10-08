@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
     console.log(auth_header);
     const auth = auth_header.split(' ');
     const verificationService = new VerifierService();
-    const authorized = true; //await verificationService.verify(auth[1]);
+    const authorized = await verificationService.verify(auth[1]);
 
     if (!authorized) {
       // Respond with JSON indicating an error message
