@@ -18,10 +18,7 @@ class VerifierService {
     const ethrDID = new EthrDIDMethod({
       name: process.env.CHAIN_NAME as string,
       registry: process.env.REGISTRY_ADDRESS as string,
-      rpcUrl: process.env.WEB3_URL,
-      provider: await new InfuraProvider(
-        process.env.CHAIN_NAME as string
-      )
+      rpcUrl: process.env.WEB3_URL
     })
     const didResolver = getSupportedResolvers([ethrDID])
 
