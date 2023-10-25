@@ -7,7 +7,6 @@ export const fetchCache = 'force-no-store'
 export default async function Login() {
 
   let hascookie = cookies().get('authorized');
-  console.log(hascookie);
   let authenticated = hascookie?.value == '1';
 
   return (

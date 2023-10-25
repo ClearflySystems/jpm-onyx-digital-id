@@ -12,15 +12,16 @@ import {isAuthed} from "@/app/components/auth";
  */
 export async function POST(request: Request) {
 
-  let authorized = await isAuthed();
-  if(authorized){
-    cookies().set('authorized', '1', {
-      expires: Date.now() + (3600 * 1000),
-      path: '/'
-    });
-  }
-
   try {
+    let authorized = await isAuthed();
+    if(authorized){
+      cookies().set('authorized', '1', {
+        expires: Date.now() + (3600 * 1000),
+        path: '/'
+      });
+    }else{
+      throw new Error('Verification failed');
+    }
     return NextResponse.json({
       status: "OK"
     });
