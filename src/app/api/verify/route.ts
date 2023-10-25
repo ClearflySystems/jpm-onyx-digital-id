@@ -1,6 +1,9 @@
 import { NextResponse} from "next/server";
 
-import {VerifierService} from "@/app/services/verifierService";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+import {cookies} from "next/headers";
+import {isAuthed} from "@/app/components/auth";
 
 /**
  * Take a submitted VerifiedPresentation request and test if valid
@@ -9,13 +12,18 @@ import {VerifierService} from "@/app/services/verifierService";
  */
 export async function POST(request: Request) {
 
-  const { presentation } = await request.json();
-  const verificationService = new VerifierService();
-
-  console.log(presentation);
+  let authorized = await isAuthed();
+  if(authorized){
+    cookies().set('authorized', '1', {
+      expires: Date.now() + (3600 * 1000),
+      path: '/'
+    });
+  }
 
   try {
-    return NextResponse.json(await verificationService.verify(presentation));
+    return NextResponse.json({
+      status: "OK"
+    });
   } catch (e: any) {
     return NextResponse.json({
       status: "invalid",

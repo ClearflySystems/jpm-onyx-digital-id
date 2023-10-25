@@ -7,19 +7,24 @@ import {
   getSupportedResolvers,
   getCredentialsFromVP
 } from '@jpmorganchase/onyx-ssi-sdk'
-import {InfuraProvider} from "@ethersproject/providers";
+import "@ethersproject/shims"
 
 class VerifierService {
 
   public async verify(vp: string) {
-    console.log('Verifying Presentation JWT')
+    console.log('Verifying Presentation JWT');
+
+    const ethrProvider = {
+      name: process.env.CHAIN_NAME! as string,
+      chainId: process.env.CHAIN_ID,
+      rpcUrl: process.env.WEB3_URL!,
+      registry: process.env.REGISTRY_ADDRESS!,
+      gasSource: ""
+    };
+
 
     let result = true
-    const ethrDID = new EthrDIDMethod({
-      name: process.env.CHAIN_NAME as string,
-      registry: process.env.REGISTRY_ADDRESS as string,
-      rpcUrl: process.env.WEB3_URL
-    })
+    const ethrDID = new EthrDIDMethod(ethrProvider);
     const didResolver = getSupportedResolvers([ethrDID])
 
     console.log(`DID Resolver: ${didResolver}`);
